@@ -15,7 +15,8 @@
             {
                 if ($link != 'homeUrl')
                 {
-                    if (!$isLinkDone) {
+                    if (!$isLinkDone)
+                    {
                         $url = makeUrl($linkContainer['homeUrl']['scheme'], $linkContainer['homeUrl']['host'], $link);
                         $content = getFileContent($url, '');
                         saveFileContent($content, $url);
@@ -41,19 +42,14 @@
     
     function getFileContent($url, $divId)
     {
-        //set_time_limit(120); //CRUTCH
-        //$fileContent = file_get_contents($url);
         $fileContent = getFileByCurl($url);
-        //TODO: parse content for correct div
         return ($fileContent === false)? "" : getBlockContent($fileContent, 'column_02');
     }
     
     function saveFileContent($fileContent, $fileUri)
     {
-        //TODO: save content
         $filename = parse_url($fileUri);
-        file_put_contents(str_replace('/', '-', $filename['path']), $fileContent);
-        echo 'saved ' . $fileUri . "\n"; //debug
+        file_put_contents(str_replace('/', '-', $filename['path']) . '.html', $fileContent);
 
     }
     
@@ -95,9 +91,7 @@
         $numBlocksToClose = 1;
         $blockStart = strpos($content, $blockNameOpen . ' class="' . $blockId . '"');
         $blockEnd = $blockStart + 1;
-        //$i = 10;
-        //echo "# blockStart=" . $blockStart . " blockEnd=" . $blockEnd . "\n";
-        while (($numBlocksToClose > 0))// and ($i > 0))
+        while ($numBlocksToClose > 0)
         {
             $posOpen = strpos($content, $blockNameOpen, $blockEnd +1);
             if ($posOpen === false) $posOpen = INF;
@@ -114,8 +108,6 @@
                 $blockEnd = $posOpen;
 
             }
-            //echo "#" . $i . " posOpen=" . $posOpen . " posClose=" . $posClose . " numBlocksToClose=" . $numBlocksToClose . substr($content, $blockEnd+4, 20) . "\n";
-            //$i--;
         }
         $blockEnd += strlen($blockNameClose);
         return substr($content, $blockStart, ($blockEnd - $blockStart));
