@@ -85,7 +85,7 @@
         curl_setopt($curlHandler, CURLOPT_RETURNTRANSFER, true);
         $content = curl_exec($curlHandler);
         curl_close($curlHandler);
-        return $content;
+        return ($content !== false) ? $content : "";
     }
 
     function getBlockContent($content, $blockId)
