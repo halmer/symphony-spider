@@ -96,6 +96,10 @@
         $posClose = -1;
         $numBlocksToClose = 1;
         $blockStart = strpos($content, $blockNameOpen . ' class="' . $blockId . '"');
+        if ($blockStart === false)
+        {
+            return "";
+        }
         $blockEnd = $blockStart + 1;
         while ($numBlocksToClose > 0)
         {
