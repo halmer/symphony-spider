@@ -7,6 +7,10 @@
         $content = getFileContent($homeUrl, '');
         saveFileContent($content, $homeUrl);
         getLinks($content, $linkContainer);
+    }
+
+    function processContent(&$linkContainer)
+    {
         $wasUnsavedLink = true;
         while ($wasUnsavedLink)
         {
@@ -27,7 +31,6 @@
                 }
             }
         }
-        var_dump($linkContainer);
     }
 
     function makeUrl($scheme, $host, $link)
@@ -57,15 +60,18 @@
     {
         $links = array();
         preg_match_all('/href="[^"]+"/', $fileContent, $links);
-        foreach($links[0] as $value)
+        if ((!empty($links[0])) && (is_array($links[0])))
         {
-            $url = parse_url(preg_replace('/href="([^\']+)"/', '$1', $value));
-            if (strpos($url['path'], $linkContainer['homeUrl']['path']) !== false)
+            foreach($links[0] as $value)
             {
-                $link = makeLink($url['path'], $url['query']);
-                if (!isset($linkContainer[$link]))
+                $url = parse_url(preg_replace('/href="([^\']+)"/', '$1', $value));
+                if (strpos($url['path'], $linkContainer['homeUrl']['path']) !== false)
                 {
-                    $linkContainer[$link] = false;
+                    $link = makeLink($url['path'], $url['query']);
+                    if (!isset($linkContainer[$link]))
+                    {
+                        $linkContainer[$link] = false;
+                    }
                 }
             }
         }
