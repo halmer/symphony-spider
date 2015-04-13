@@ -1,4 +1,4 @@
-<?php
+<?php12
     function runSpider($homeUrl)
     {
         set_time_limit(120);
